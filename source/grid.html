@@ -1,6 +1,11 @@
 <html>
 <head>
     <link href="grid.css" rel="stylesheet" type="text/css">
+    <script>
+      function testfunction2() {
+        alert(2);
+      }
+    </script>
 </head>
 <body>
 <!-- demo root element -->
@@ -8,8 +13,7 @@
     <form id="search">
         Search <input name="query" v-model="searchQuery">
     </form>
-    <demo-grid :data="gridData" :columns="gridColumns" :filter-key="searchQuery">
-    </demo-grid>
+    <demo-grid :data="gridData" :columns="gridColumns" :filter-key="searchQuery"> </demo-grid>
 </div>
 
 <!-- component template -->
@@ -17,26 +21,74 @@
 <table>
     <thead>
     <tr>
-        <th v-for="key in columns"
-        @click="sortBy(key)"
-        :class="{ active: sortKey == key }">
-        {{ key | capitalize }}
-        <span class="arrow" :class="sortOrders[key] > 0 ? 'asc' : 'dsc'">
-        </span>
+        <th v-for="column in columns" @click="sortBy(column.key)" :class="{ active: sortKey == column.key }"> 
+            {{ column.label | capitalize }}
+            <span class="arrow" :class="sortOrders[column.key] > 0 ? 'asc' : 'dsc'"> </span>
         </th>
     </tr>
     </thead>
     <tbody>
     <tr v-for="entry in filteredData">
-        <td v-for="key in columns">
-        {{entry[key]}}
+        <td v-for="column in columns"> 
+            {{entry[column.key]}} 
+            <!--
+            <button @click="column.callback">{{column.callback}}</button>
+            -->
+            <button @click="testfunction">{{column.callback}}</button>
+            <button @click="{{column.callback}}">{{column.callback}}</button>
         </td>
     </tr>
     </tbody>
 </table>
 </script>
+
+<div id="app-5">
+    <p>{{ message }}</p>
+    <button @click="reverseMessage">메시지 뒤집기</button>
+</div>
+
+
 <script src="vue.js"></script>
 <script src="grid.js"></script>
+<script>
+    var app5 = new Vue({
+        el: '#app-5',
+        data: {
+            message: '안녕하세요! Vue.js!'
+        },
+        methods: {
+            reverseMessage: function () {
+            this.message = this.message.split('').reverse().join('')
+            }
+        }
+    })
+
+    // bootstrap the demo
+    var demo = new Vue({
+        el: '#demo',
+        data: {
+            searchQuery: '',
+            gridColumns: [
+                {key: 'name', label: '이름', callback: "testfunction2" },
+                {key: 'power', label: '힘'},
+                {key: 'etc', label: '휴지통'}
+            ],
+            gridData: [
+                { name: 'Chuck Norris', power: Infinity, etc: 'test' },
+                { name: 'Bruce Lee', power: 9000, etc: 'test' },
+                { name: 'Jackie Chan', power: 7000, etc: 'test' },
+                { name: 'Jet Li', power: 8000, etc: 'test' },
+                { name: 'Jet Li', power: 8000, etc: 'test' },
+                { name: 'Jet Li', power: 8000, etc: 'test' },
+            ]
+        }, 
+        methods: {
+            reverseMessage: function () {
+                this.message = this.message.split('').reverse().join('')
+            },
+        }
+    })
+</script>
 
 </body>
 </html>
