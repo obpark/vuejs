@@ -35,7 +35,8 @@
             <button @click="column.callback">{{column.callback}}</button>
             -->
             <button @click="testfunction">{{column.callback}}</button>
-            <button @click="{{column.callback}}">{{column.callback}}</button>
+            <button @click="remove">X</button>
+            <button @click="$emit(column.callback)">{{column.callback}}</button>
         </td>
     </tr>
     </tbody>
@@ -51,6 +52,10 @@
 <script src="vue.js"></script>
 <script src="grid.js"></script>
 <script>
+    function remove() {
+        alert("remove");
+    }
+
     var app5 = new Vue({
         el: '#app-5',
         data: {
